@@ -1,0 +1,1000 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>:root{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Dimensa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: sticky slim nav, hero split (headline left, live 3D demo right), benefits row, pitch + how-it-works, closing CTA. Graph-paper grid behind the hero. */
+:root {
+  --bg: #F2F5F9;
+  --panel: #FFFFFF;
+  --ink: #0F1B2D;
+  --muted: #55657A;
+  --line: #D3DBE6;
+  --lo: #2F6FDE;
+  --hi: #F2B134;
+  --accent: #E4572E;
+  --grid: rgba(15, 27, 45, 0.06);
+  --display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --body: "Source Sans 3", "Segoe UI", Arial, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0B1220; --panel: #111B2E; --ink: #E8EEF7; --muted: #93A3BA; --line: #223048;
+    --lo: #3E7BFF; --hi: #FFC857; --accent: #FF7A59; --grid: rgba(232, 238, 247, 0.06);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0B1220; --panel: #111B2E; --ink: #E8EEF7; --muted: #93A3BA; --line: #223048;
+  --lo: #3E7BFF; --hi: #FFC857; --accent: #FF7A59; --grid: rgba(232, 238, 247, 0.06);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.55; padding-inline: 20px; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.05; margin: 0; text-wrap: balance; letter-spacing: -0.02em; }
+p { margin: 0; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.wrap { max-width: 1180px; margin-inline: auto; }
+
+nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 18px; }
+.brand { display: flex; align-items: center; gap: 10px; font-family: var(--display); font-weight: 800; font-size: 22px; letter-spacing: -0.02em; text-decoration: none; }
+.brand svg { width: 34px; height: 34px; flex: none; }
+.navlink { font-weight: 600; font-size: 15px; text-decoration: none; border-bottom: 2px solid var(--accent); padding-bottom: 2px; }
+
+.hero { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 40px; align-items: center; padding-block: 36px 64px; }
+.hero::before { content: ""; position: absolute; inset: 0 -20px; z-index: -1; background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px); background-size: 32px 32px; mask-image: linear-gradient(to bottom, #000 60%, transparent); -webkit-mask-image: linear-gradient(to bottom, #000 60%, transparent); }
+.eyebrow { font-family: var(--mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 18px; }
+h1 { font-size: clamp(40px, 6.2vw, 76px); font-weight: 800; }
+h1 em { font-style: normal; color: var(--accent); }
+.sub { margin-top: 22px; font-size: 20px; color: var(--muted); max-width: 30em; }
+.cta { display: inline-block; margin-top: 30px; background: var(--ink); color: var(--bg); font-family: var(--display); font-weight: 700; font-size: 18px; padding: 15px 26px; border-radius: 6px; text-decoration: none; }
+.cta:hover { background: var(--accent); color: #fff; }
+.fine { margin-top: 14px; font-size: 14px; color: var(--muted); }
+
+.demo { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 18px 40px -24px rgba(15, 27, 45, 0.45); min-width: 0; overflow: hidden; }
+.tabs { display: flex; flex-wrap: wrap; border-bottom: 1px solid var(--line); }
+.tabs button { flex: 1 1 auto; font: 600 14px var(--mono); color: var(--muted); background: none; border: 0; border-right: 1px solid var(--line); padding: 12px 10px; cursor: pointer; }
+.tabs button:last-child { border-right: 0; }
+.tabs button[aria-selected="true"] { color: var(--ink); background: var(--bg); box-shadow: inset 0 -3px 0 var(--accent); }
+.demo-body { display: grid; grid-template-columns: minmax(0, 1fr); }
+.steps-pane { padding: 18px 18px 16px; border-bottom: 1px solid var(--line); min-width: 0; }
+.problem { font-family: var(--mono); font-size: 14px; color: var(--muted); }
+.problem b { display: block; margin-top: 4px; font-size: 18px; color: var(--ink); font-weight: 500; overflow-wrap: anywhere; }
+ol.steps { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 6px; }
+ol.steps li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; padding: 8px 10px; border-radius: 6px; font-size: 16px; line-height: 1.4; opacity: 0.55; border: 1px solid transparent; }
+ol.steps li .n { font: 500 13px var(--mono); width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--line); display: grid; place-items: center; }
+ol.steps li code { font-family: var(--mono); font-size: 14px; overflow-wrap: anywhere; }
+ol.steps li.on { opacity: 1; background: var(--bg); border-color: var(--line); }
+ol.steps li.on .n { background: var(--accent); border-color: var(--accent); color: #fff; }
+ol.steps li.done { opacity: 0.85; }
+.stepper { display: flex; gap: 8px; margin-top: 14px; }
+.stepper button { font: 600 14px var(--body); padding: 8px 14px; border-radius: 6px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer; }
+.stepper button:disabled { opacity: 0.4; cursor: default; }
+.stepper button.primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.view-pane { position: relative; background: var(--bg); }
+canvas { display: block; width: 100%; aspect-ratio: 4 / 3; max-width: 100%; cursor: grab; touch-action: none; }
+canvas:active { cursor: grabbing; }
+.view-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 10px 14px; border-top: 1px solid var(--line); font: 500 13px var(--mono); color: var(--muted); background: var(--panel); }
+.view-bar label { display: flex; align-items: center; gap: 8px; }
+.view-bar input[type="range"] { width: 110px; accent-color: var(--accent); }
+.readout { color: var(--ink); overflow-wrap: anywhere; }
+.chip { position: absolute; top: 12px; left: 12px; font: 500 12px var(--mono); background: var(--panel); border: 1px solid var(--line); border-radius: 99px; padding: 4px 10px; color: var(--muted); }
+
+.photo { margin: -18px -18px 16px; padding: 14px 18px; border-bottom: 1px solid var(--line); display: grid; gap: 10px; background: var(--bg); }
+.photo-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.btn { font: 600 14px var(--body); padding: 9px 14px; border-radius: 6px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer; }
+.btn.primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.btn:disabled { opacity: 0.4; cursor: default; }
+.thumb { width: 56px; height: 56px; object-fit: cover; border-radius: 6px; border: 1px solid var(--line); }
+.status { font-size: 14px; color: var(--muted); min-width: 0; overflow-wrap: anywhere; }
+.status.err { color: var(--accent); }
+.answer { margin-top: 12px; padding: 10px 12px; border-left: 3px solid var(--accent); background: var(--bg); font-size: 16px; overflow-wrap: anywhere; }
+.answer b { display: block; font: 500 12px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.empty { margin-top: 4px; color: var(--muted); font-size: 16px; }
+.caveat { margin-top: 10px; font-size: 13px; color: var(--muted); }
+.nomodel { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 24px; color: var(--muted); font-size: 15px; pointer-events: none; }
+
+.plabel { font: 500 12px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.ptext { width: 100%; font: 500 16px var(--mono); color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; resize: vertical; min-height: 64px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.ex { font: 500 13px var(--mono); padding: 5px 10px; border-radius: 99px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer; }
+.ex:hover { border-color: var(--accent); }
+
+section { padding-block: 56px; }
+.benefits { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border-block: 1px solid var(--line); padding-block: 0; }
+.benefit { padding: 32px 28px 34px 0; border-right: 1px solid var(--line); }
+.benefit + .benefit { padding-left: 28px; }
+.benefit:last-child { border-right: 0; }
+.benefit h3 { font-size: 26px; font-weight: 700; }
+.benefit p { margin-top: 12px; color: var(--muted); }
+
+.two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; }
+h2 { font-size: clamp(30px, 4vw, 46px); font-weight: 800; }
+.pitch p { margin-top: 20px; font-size: 20px; max-width: 30em; }
+.how ol { list-style: none; margin: 24px 0 0; padding: 0; display: grid; gap: 0; counter-reset: s; }
+.how li { counter-increment: s; display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 14px; padding-block: 18px; border-top: 1px solid var(--line); }
+.how li::before { content: counter(s); font: 500 15px var(--mono); color: var(--accent); padding-top: 3px; }
+.how li strong { font-family: var(--display); font-size: 21px; display: block; }
+.how li span { color: var(--muted); }
+
+.closing { text-align: left; background: var(--ink); color: var(--bg); border-radius: 12px; padding: 48px clamp(24px, 5vw, 56px); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 40px; }
+.closing h2 { max-width: 14em; }
+.closing .cta { background: var(--accent); color: #fff; margin: 0; }
+.closing .cta:hover { background: var(--bg); color: var(--ink); }
+footer { padding-block: 0 40px; color: var(--muted); font-size: 14px; }
+
+@media (max-width: 900px) {
+  .hero { grid-template-columns: minmax(0, 1fr); }
+  .benefits { grid-template-columns: minmax(0, 1fr); }
+  .benefit, .benefit + .benefit { padding: 26px 0; border-right: 0; border-bottom: 1px solid var(--line); }
+  .benefit:last-child { border-bottom: 0; }
+  .two { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <nav>
+    <a class="brand" href="#top" aria-label="Dimensa home">
+      <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+        <path d="M20 4 34 12v16L20 36 6 28V12z" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M6 12l14 8 14-8M20 20v16" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M9 27c5-9 10-9 12-5s6 2 10-8" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+      Dimensa
+    </a>
+    <a class="navlink" href="#how">How it works</a>
+  </nav>
+
+  <header class="hero" id="top">
+    <div>
+      <p class="eyebrow">Math help for students who feel stuck</p>
+      <h1>See the math. <em>Then</em> solve it.</h1>
+      <p class="sub">Type any problem and get a solution one small step at a time, next to a 3D model you can turn with your own hand.</p>
+      <a class="cta" href="#demo">Solve my first problem</a>
+      <p class="fine">Try the three examples, or upload a photo of your own problem.</p>
+    </div>
+
+    <div class="demo" id="demo">
+      <div class="tabs" role="tablist" aria-label="Example problems">
+        <button role="tab" id="tab0" aria-selected="true">Paraboloid</button>
+        <button role="tab" id="tab1" aria-selected="false">Saddle</button>
+        <button role="tab" id="tab2" aria-selected="false">Waves</button>
+        <button role="tab" id="tab3" aria-selected="false">Your problem</button>
+      </div>
+      <div class="demo-body">
+        <div class="steps-pane">
+          <div class="photo" id="photo" hidden>
+            <label class="plabel" for="ptext">Your problem</label>
+            <textarea id="ptext" class="ptext" rows="2" spellcheck="false" placeholder="Type a problem, like 2x + 3 = 11, or upload a photo"></textarea>
+            <div class="photo-row">
+              <button type="button" class="btn" id="pick">Upload a photo</button>
+              <input id="photoIn" type="file" accept="image/*" hidden>
+              <img class="thumb" id="thumb" alt="Your photo of the problem" hidden>
+              <button type="button" class="btn primary" id="solve">Solve</button>
+            </div>
+            <div class="chips" id="chips" role="group" aria-label="Example problems"></div>
+            <p class="status" id="status" role="status">Type a problem, or upload a clear photo of one problem.</p>
+          </div>
+          <p class="problem" id="probwrap">Problem<b id="problem"></b></p>
+          <p class="empty" id="empty" hidden>Your step-by-step solution will appear here.</p>
+          <ol class="steps" id="steps"></ol>
+          <div class="answer" id="answer" hidden></div>
+          <div class="stepper" id="stepper">
+            <button id="back" type="button">Back</button>
+            <button id="next" type="button" class="primary">Next step</button>
+          </div>
+          <p class="caveat" id="caveat" hidden>Automatic solutions can be wrong. Check the final answer against your textbook or teacher.</p>
+        </div>
+        <div class="view-pane">
+          <span class="chip">Drag to rotate</span>
+          <canvas id="cv" role="img" aria-label="Interactive 3D surface for the selected problem"></canvas>
+          <div class="nomodel" id="nomodel" hidden></div>
+          <div class="view-bar">
+            <span class="readout" id="readout"></span>
+            <label for="zoom">Zoom <input id="zoom" type="range" min="60" max="160" value="100"></label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="benefits" aria-label="Benefits">
+    <div class="benefit">
+      <h3>Steps for the stuck</h3>
+      <p>Every solution is cut into four or five short moves, each explained in plain words. Nobody gets lost halfway down the page.</p>
+    </div>
+    <div class="benefit">
+      <h3>Every problem gets a shape</h3>
+      <p>Surfaces, solids and vectors appear beside the working. Students see why the answer is true, not just what it is.</p>
+    </div>
+    <div class="benefit">
+      <h3>Algebra to calculus</h3>
+      <p>Start with a parabola in Year 9 and keep going to partial derivatives and volumes in university. One tool the whole way.</p>
+    </div>
+  </section>
+
+  <section class="two" id="how">
+    <div class="pitch">
+      <h2>Abstract maths is hard to hold in your head.</h2>
+      <p>Most students don't fail because they can't calculate. They fail because they can't picture what the symbols mean. Dimensa pairs every worked solution with a model they can rotate, zoom and touch, so the idea finally clicks.</p>
+    </div>
+    <div class="how">
+      <ol>
+        <li><div><strong>Enter a problem</strong><span>Snap a photo of your homework and upload it.</span></div></li>
+        <li><div><strong>Read one step at a time</strong><span>Move forward when you understand, go back when you don't.</span></div></li>
+        <li><div><strong>Turn the model</strong><span>Rotate and zoom the 3D shape to see what each step did.</span></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="closing" style="padding-block:48px;">
+    <h2>Give your next problem a third dimension.</h2>
+    <a class="cta" href="#demo">Solve my first problem</a>
+  </section>
+  <footer>Dimensa is a working name. Demo problems are examples.</footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjs@12.4.3/lib/browser/math.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js"></script>
+<script>
+(function () {
+  var PROBLEMS = [
+    {
+      title: "z = x² + y²", f: function (x, y) { return x * x + y * y; }, d: 2.5, zs: 0.2,
+      ask: "Find ∂z/∂x at the point (1, 2)", pt: [1, 2],
+      steps: [
+        "Treat <code>y</code> as a constant. Only <code>x</code> is allowed to change.",
+        "Differentiate <code>x²</code> with respect to x. You get <code>2x</code>.",
+        "The term <code>y²</code> is a constant here, so its derivative is <code>0</code>.",
+        "Put the pieces together: <code>∂z/∂x = 2x</code>.",
+        "Substitute x = 1. The slope is <code>2</code>, so the surface rises 2 units for each 1 step in x."
+      ]
+    },
+    {
+      title: "z = x² − y²", f: function (x, y) { return x * x - y * y; }, d: 2.5, zs: 0.2,
+      ask: "Classify the critical point", pt: [0, 0],
+      steps: [
+        "Find both partial derivatives: <code>zₓ = 2x</code> and <code>z_y = −2y</code>.",
+        "Set both to zero. That gives <code>x = 0</code> and <code>y = 0</code>, so the point is (0, 0).",
+        "Find the second derivatives: <code>zₓₓ = 2</code>, <code>z_yy = −2</code>, <code>zₓy = 0</code>.",
+        "Compute <code>D = zₓₓ·z_yy − zₓy² = −4</code>.",
+        "D is negative, so (0, 0) is a saddle point. It curves up one way and down the other."
+      ]
+    },
+    {
+      title: "z = sin(x)·cos(y)", f: function (x, y) { return Math.sin(x) * Math.cos(y); }, d: 3.2, zs: 1.0,
+      ask: "Find ∂z/∂x at the point (0, 0)", pt: [0, 0],
+      steps: [
+        "Treat <code>y</code> as a constant, so <code>cos(y)</code> acts like a plain number.",
+        "Differentiate <code>sin(x)</code> with respect to x. You get <code>cos(x)</code>.",
+        "Keep the constant factor: <code>∂z/∂x = cos(x)·cos(y)</code>.",
+        "Substitute x = 0 and y = 0: <code>cos(0)·cos(0) = 1·1</code>.",
+        "The slope is <code>1</code>. On the wave at the origin, the surface climbs at 45° along x."
+      ]
+    },
+    { custom: true, title: "", ask: "", f: null, d: 3, zs: 1, pt: null, steps: [], answer: "" }
+  ];
+
+  var cur = 0, step = 0, yaw = -0.7, pitch = 0.62, zoom = 1, auto = true, dragging = false, lastX = 0, lastY = 0;
+  var cv = document.getElementById("cv"), ctx = cv.getContext("2d");
+  var stepsEl = document.getElementById("steps"), problemEl = document.getElementById("problem");
+  var backBtn = document.getElementById("back"), nextBtn = document.getElementById("next");
+  var readout = document.getElementById("readout"), zoomEl = document.getElementById("zoom");
+  var emptyEl = document.getElementById("empty"), probWrap = document.getElementById("probwrap"), stepperEl = document.getElementById("stepper");
+  var caveatEl = document.getElementById("caveat"), answerEl = document.getElementById("answer"), nomodel = document.getElementById("nomodel"), photoEl = document.getElementById("photo");
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var N = 30, W = 0, H = 0, dpr = 1, colors = {};
+
+  function hex(h) { h = h.trim().replace("#", ""); return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)]; }
+  function readColors() {
+    var cs = getComputedStyle(document.documentElement);
+    colors = { lo: hex(cs.getPropertyValue("--lo")), hi: hex(cs.getPropertyValue("--hi")), accent: cs.getPropertyValue("--accent").trim(), ink: cs.getPropertyValue("--ink").trim(), muted: cs.getPropertyValue("--muted").trim(), bg: cs.getPropertyValue("--bg").trim(), line: cs.getPropertyValue("--line").trim() };
+  }
+  function mix(t) {
+    t = Math.max(0, Math.min(1, t));
+    var a = colors.lo, b = colors.hi;
+    return "rgb(" + Math.round(a[0] + (b[0] - a[0]) * t) + "," + Math.round(a[1] + (b[1] - a[1]) * t) + "," + Math.round(a[2] + (b[2] - a[2]) * t) + ")";
+  }
+
+  function size() {
+    var r = cv.getBoundingClientRect();
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = Math.max(1, Math.round(r.width)); H = Math.max(1, Math.round(r.height));
+    cv.width = W * dpr; cv.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    draw();
+  }
+
+  function proj(x, y, z, sc) {
+    var cy = Math.cos(yaw), sy = Math.sin(yaw), cp = Math.cos(pitch), sp = Math.sin(pitch);
+    var x1 = x * cy - y * sy, y1 = x * sy + y * cy;
+    return { x: W / 2 + x1 * sc, y: H * 0.56 - (z * cp + y1 * sp) * sc, d: y1 * cp - z * sp };
+  }
+
+  function draw() {
+    if (!W) return;
+    var P = PROBLEMS[cur], d = P.d, zs = P.zs;
+    var sc = (Math.min(W, H * 1.25) / (2 * d * 1.45)) * zoom;
+    ctx.clearRect(0, 0, W, H);
+    if (!P.f) {
+      nomodel.textContent = P.steps.length ? "This problem doesn't have a 3D model. The steps still work." : "Your 3D model appears here after you solve a problem.";
+      nomodel.hidden = false; return;
+    }
+    nomodel.hidden = true;
+    var g = [], i, j, zmin = Infinity, zmax = -Infinity;
+    for (i = 0; i <= N; i++) { g[i] = []; for (j = 0; j <= N; j++) {
+      var x = -d + (2 * d * i) / N, y = -d + (2 * d * j) / N, z = P.f(x, y);
+      var ok = isFinite(z);
+      if (ok) { if (z < zmin) zmin = z; if (z > zmax) zmax = z; } else { z = 0; }
+      g[i][j] = { x: x, y: y, z: z, ok: ok, p: proj(x, y, z * zs, sc) };
+    } }
+    var quads = [];
+    for (i = 0; i < N; i++) for (j = 0; j < N; j++) {
+      var a = g[i][j], b = g[i + 1][j], c = g[i + 1][j + 1], e = g[i][j + 1];
+      if (!(a.ok && b.ok && c.ok && e.ok)) continue;
+      quads.push({ v: [a, b, c, e], depth: (a.p.d + b.p.d + c.p.d + e.p.d) / 4, z: (a.z + b.z + c.z + e.z) / 4 });
+    }
+    quads.sort(function (m, n) { return n.depth - m.depth; });
+    if (zmin === Infinity) { zmin = 0; zmax = 1; }
+
+    // axes behind surface
+    var o = proj(0, 0, 0, sc), axes = [[d * 1.15, 0, 0, "x"], [0, d * 1.15, 0, "y"], [0, 0, Math.max(Math.abs(zmax), Math.abs(zmin)) * zs * 1.25 + 0.2, "z"]];
+    ctx.lineWidth = 1.2; ctx.font = "500 12px JetBrains Mono, monospace"; ctx.fillStyle = colors.muted; ctx.strokeStyle = colors.muted;
+    axes.forEach(function (ax) {
+      var q = proj(ax[0], ax[1], ax[2], sc);
+      ctx.beginPath(); ctx.moveTo(o.x, o.y); ctx.lineTo(q.x, q.y); ctx.globalAlpha = 0.55; ctx.stroke(); ctx.globalAlpha = 1;
+      ctx.fillText(ax[3], q.x + 5, q.y - 5);
+    });
+
+    var span = zmax - zmin || 1;
+    ctx.lineJoin = "round"; ctx.lineWidth = 0.6; ctx.strokeStyle = colors.bg;
+    quads.forEach(function (q) {
+      ctx.beginPath();
+      ctx.moveTo(q.v[0].p.x, q.v[0].p.y);
+      for (var k = 1; k < 4; k++) ctx.lineTo(q.v[k].p.x, q.v[k].p.y);
+      ctx.closePath();
+      ctx.fillStyle = mix((q.z - zmin) / span);
+      ctx.globalAlpha = 0.93; ctx.fill(); ctx.globalAlpha = 0.5; ctx.stroke(); ctx.globalAlpha = 1;
+    });
+
+    // marked point
+    var pt = P.pt; if (!pt) return; var pz = P.f(pt[0], pt[1]) * zs, pp = proj(pt[0], pt[1], pz, sc), pb = proj(pt[0], pt[1], 0, sc);
+    ctx.strokeStyle = colors.accent; ctx.lineWidth = 1.5; ctx.setLineDash([4, 4]);
+    ctx.beginPath(); ctx.moveTo(pb.x, pb.y); ctx.lineTo(pp.x, pp.y); ctx.stroke(); ctx.setLineDash([]);
+    var pulse = step === P.steps.length - 1 ? 3 + 2 * Math.sin(Date.now() / 260) : 0;
+    ctx.beginPath(); ctx.arc(pp.x, pp.y, 9 + pulse, 0, 6.2832); ctx.fillStyle = colors.accent; ctx.globalAlpha = 0.22; ctx.fill(); ctx.globalAlpha = 1;
+    ctx.beginPath(); ctx.arc(pp.x, pp.y, 5.5, 0, 6.2832); ctx.fillStyle = colors.accent; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = colors.bg; ctx.stroke();
+  }
+
+  function richText(el, s) {
+    String(s).split("`").forEach(function (part, i) {
+      if (!part) return;
+      if (i % 2) { var c = document.createElement("code"); c.textContent = part; el.appendChild(c); }
+      else el.appendChild(document.createTextNode(part));
+    });
+  }
+  function renderSteps() {
+    var P = PROBLEMS[cur], empty = !!P.custom && !P.steps.length;
+    emptyEl.hidden = !empty; probWrap.hidden = empty; stepperEl.hidden = empty;
+    caveatEl.hidden = !P.custom || empty;
+    answerEl.hidden = true; answerEl.textContent = "";
+    problemEl.textContent = P.custom ? P.ask : P.title + "   →   " + P.ask;
+    stepsEl.innerHTML = "";
+    P.steps.forEach(function (s, idx) {
+      var li = document.createElement("li");
+      li.className = idx === step ? "on" : (idx < step ? "done" : "");
+      var n = document.createElement("span"); n.className = "n"; n.textContent = String(idx + 1);
+      var t = document.createElement("span");
+      if (P.custom) richText(t, s); else t.innerHTML = s;
+      li.appendChild(n); li.appendChild(t);
+      stepsEl.appendChild(li);
+    });
+    if (P.custom && P.steps.length && step === P.steps.length - 1 && P.answer) {
+      var lab = document.createElement("b"); lab.textContent = "Answer";
+      var a = document.createElement("span"); richText(a, P.answer);
+      answerEl.appendChild(lab); answerEl.appendChild(a); answerEl.hidden = false;
+    }
+    backBtn.disabled = step === 0;
+    nextBtn.disabled = step >= P.steps.length - 1;
+    if (P.pt && P.f) {
+      var pz = P.f(P.pt[0], P.pt[1]);
+      readout.textContent = "Marked point (" + P.pt[0] + ", " + P.pt[1] + ", " + (isFinite(pz) ? Math.round(pz * 100) / 100 : "undefined") + ")";
+    } else readout.textContent = P.f ? "Drag to look around" : "";
+  }
+
+  function select(n) {
+    cur = n; step = 0;
+    for (var k = 0; k < 4; k++) document.getElementById("tab" + k).setAttribute("aria-selected", k === n ? "true" : "false");
+    photoEl.hidden = !PROBLEMS[n].custom;
+    renderSteps(); draw();
+  }
+  [0, 1, 2, 3].forEach(function (n) { document.getElementById("tab" + n).addEventListener("click", function () { select(n); }); });
+  backBtn.addEventListener("click", function () { if (step > 0) { step--; renderSteps(); draw(); } });
+  nextBtn.addEventListener("click", function () { if (step < PROBLEMS[cur].steps.length - 1) { step++; renderSteps(); draw(); } });
+  zoomEl.addEventListener("input", function () { zoom = zoomEl.value / 100; draw(); });
+
+  cv.addEventListener("pointerdown", function (e) { dragging = true; auto = false; lastX = e.clientX; lastY = e.clientY; try { cv.setPointerCapture(e.pointerId); } catch (x) {} });
+  cv.addEventListener("pointermove", function (e) {
+    if (!dragging) return;
+    yaw += (e.clientX - lastX) * 0.01;
+    pitch = Math.max(0.1, Math.min(1.45, pitch + (e.clientY - lastY) * 0.008));
+    lastX = e.clientX; lastY = e.clientY; draw();
+  });
+  function up() { dragging = false; }
+  cv.addEventListener("pointerup", up); cv.addEventListener("pointercancel", up);
+
+  var last = 0;
+  function tick(t) {
+    if ((auto && !reduced) && t - last > 30) { yaw += 0.006; last = t; draw(); }
+    else if (step === PROBLEMS[cur].steps.length - 1 && !reduced && t - last > 60) { last = t; draw(); }
+    requestAnimationFrame(tick);
+  }
+
+  // ---- expression parser (no eval): turns the AI's formula into a function of x and y ----
+  var NAMES = ["asin", "acos", "atan", "sinh", "cosh", "tanh", "sqrt", "sin", "cos", "tan", "exp", "abs", "log", "ln", "pi", "e", "x", "y"];
+  var FN = { asin: Math.asin, acos: Math.acos, atan: Math.atan, sinh: Math.sinh, cosh: Math.cosh, tanh: Math.tanh, sqrt: Math.sqrt, sin: Math.sin, cos: Math.cos, tan: Math.tan, exp: Math.exp, abs: Math.abs, log: Math.log, ln: Math.log };
+  function compileExpr(src) {
+    var s = String(src).toLowerCase().replace(/\*\*/g, "^").replace(/π/g, "pi").replace(/[×·]/g, "*").replace(/−/g, "-").replace(/^\s*(z|y|f\([^)]*\))\s*=/, "");
+    var toks = [], i = 0, m;
+    while (i < s.length) {
+      var ch = s.charAt(i);
+      if (ch === " ") { i++; continue; }
+      m = /^(\d+\.?\d*|\.\d+)/.exec(s.slice(i));
+      if (m) { toks.push({ t: "n", v: parseFloat(m[1]) }); i += m[1].length; continue; }
+      if (/[a-z]/.test(ch)) {
+        var found = null;
+        for (var q = 0; q < NAMES.length; q++) if (s.indexOf(NAMES[q], i) === i) { found = NAMES[q]; break; }
+        if (!found) throw new Error("unknown name");
+        toks.push({ t: "id", v: found }); i += found.length; continue;
+      }
+      if ("+-*/^(),".indexOf(ch) >= 0) { toks.push({ t: "op", v: ch }); i++; continue; }
+      throw new Error("bad character");
+    }
+    var p = 0;
+    function isOp(v) { var t = toks[p]; return !!t && t.t === "op" && t.v === v; }
+    function bin(op, l, r) { return function (x, y) { var a = l(x, y), b = r(x, y); return op === "+" ? a + b : op === "-" ? a - b : op === "*" ? a * b : a / b; }; }
+    function expr() {
+      var a = term();
+      while (isOp("+") || isOp("-")) { var op = toks[p++].v; a = bin(op, a, term()); }
+      return a;
+    }
+    function term() {
+      var a = unary();
+      for (;;) {
+        var t = toks[p];
+        if (!t) break;
+        if (t.t === "op" && (t.v === "*" || t.v === "/")) { p++; a = bin(t.v, a, unary()); }
+        else if (t.t === "n" || t.t === "id" || (t.t === "op" && t.v === "(")) { a = bin("*", a, unary()); }
+        else break;
+      }
+      return a;
+    }
+    function unary() {
+      if (isOp("-")) { p++; var u = unary(); return function (x, y) { return -u(x, y); }; }
+      if (isOp("+")) { p++; return unary(); }
+      return power();
+    }
+    function power() {
+      var b = atom();
+      if (isOp("^")) { p++; var e = unary(); return function (x, y) { return Math.pow(b(x, y), e(x, y)); }; }
+      return b;
+    }
+    function atom() {
+      var t = toks[p++];
+      if (!t) throw new Error("unexpected end");
+      if (t.t === "n") { var v = t.v; return function () { return v; }; }
+      if (t.t === "id") {
+        if (FN[t.v]) {
+          if (!isOp("(")) throw new Error("function needs (");
+          p++; var a = expr();
+          if (!isOp(")")) throw new Error("missing )");
+          p++; var f = FN[t.v];
+          return function (x, y) { return f(a(x, y)); };
+        }
+        if (t.v === "x") return function (x) { return x; };
+        if (t.v === "y") return function (x, y) { return y; };
+        if (t.v === "pi") return function () { return Math.PI; };
+        if (t.v === "e") return function () { return Math.E; };
+        throw new Error("unknown name");
+      }
+      if (t.t === "op" && t.v === "(") {
+        var inner = expr();
+        if (!isOp(")")) throw new Error("missing )");
+        p++; return inner;
+      }
+      throw new Error("unexpected symbol");
+    }
+    var fn = expr();
+    if (p !== toks.length) throw new Error("trailing input");
+    return fn;
+  }
+
+  function setCustom(r) {
+    var P = PROBLEMS[3], v = r.viz;
+    P.title = r.topic ? String(r.topic) : "Problem";
+    P.ask = String(r.problem || "");
+    P.steps = (Array.isArray(r.steps) ? r.steps : []).map(String).filter(Boolean).slice(0, 8);
+    P.answer = r.answer ? String(r.answer) : "";
+    P.f = null; P.pt = null; step = 0;
+    if (v && typeof v.expr === "string" && v.expr.length <= 200) {
+      try {
+        var fn = compileExpr(v.expr), d = Math.min(6, Math.max(1, Number(v.domain) || 3));
+        var maxabs = 0, any = false, i, j, z;
+        for (i = 0; i <= 20; i++) for (j = 0; j <= 20; j++) {
+          z = fn(-d + (2 * d * i) / 20, -d + (2 * d * j) / 20);
+          if (isFinite(z)) { any = true; maxabs = Math.max(maxabs, Math.abs(z)); }
+        }
+        if (any) {
+          P.f = fn; P.d = d; P.zs = maxabs > 0 ? (d * 0.8) / maxabs : 1;
+          var pt = v.point;
+          if (Array.isArray(pt) && pt.length === 2 && isFinite(Number(pt[0])) && isFinite(Number(pt[1])) && Math.abs(pt[0]) <= d && Math.abs(pt[1]) <= d && isFinite(fn(Number(pt[0]), Number(pt[1])))) P.pt = [Number(pt[0]), Number(pt[1])];
+        }
+      } catch (err) { P.f = null; P.pt = null; }
+    }
+    renderSteps(); draw();
+  }
+
+  // ---- free solver: reads photos in the browser (Tesseract.js) and solves with math.js. No API key. ----
+  var EXAMPLES = ["2x + 3 = 11", "x^2 - 5x + 6 = 0", "derivative of x^3 - 4x", "z = x^2 + y^2"];
+
+  // ==== SOLVER-START ====
+  var CONSTS = { pi: 1, e: 1, tau: 1, phi: 1, i: 1 };
+
+  function pretty(s) { return String(s).replace(/\blog\(/g, "ln("); }
+
+  // number -> short text: whole number, simple fraction, or 6 decimals
+  function fmt(n) {
+    if (!isFinite(n)) return String(n);
+    var r = Math.round(n * 1e9) / 1e9;
+    if (r === 0) return "0";
+    if (Number.isInteger(r)) return String(r);
+    for (var d = 2; d <= 1000; d++) {
+      var k = Math.round(r * d);
+      if (Math.abs(k / d - r) < 1e-9) return k + "/" + d;
+    }
+    return String(Math.round(r * 1e6) / 1e6);
+  }
+
+  // names of the unknown letters in a math.js expression (skips function names and constants)
+  function varsOf(node) {
+    var names = [];
+    node.traverse(function (n, path) {
+      if (n.isSymbolNode && path !== "fn" && !CONSTS[n.name] && names.indexOf(n.name) < 0) names.push(n.name);
+    });
+    return names.sort();
+  }
+
+  function dep(n, v) {
+    var found = false;
+    n.traverse(function (m, path) { if (m.isSymbolNode && path !== "fn" && m.name === v) found = true; });
+    return found;
+  }
+
+  // clean up typed or photo-read text so math.js can parse it
+  function norm(raw) {
+    var t = String(raw).toLowerCase()
+      .replace(/[−–—]/g, "-").replace(/[×·]/g, "*").replace(/÷/g, "/")
+      .replace(/²/g, "^2").replace(/³/g, "^3").replace(/π/g, "pi")
+      .replace(/√\s*\(/g, "sqrt(").replace(/√\s*([a-z0-9.]+)/g, "sqrt($1)")
+      .replace(/\bln\s*\(/g, "log(")
+      .replace(/[|`“”"]/g, " ").replace(/\s+/g, " ").trim();
+    t = t.replace(/^(\d+[.)]|\([a-z]\)|[a-z]\))\s+/, ""); // question numbers like "1." or "(a)"
+    return t;
+  }
+
+  function ev(code, scope) {
+    try { var v = code.evaluate(scope); return typeof v === "number" ? v : NaN; } catch (e) { return NaN; }
+  }
+
+  // a*x^2 + b*x + c from three sample points, checked at three more. null if it is not a polynomial of degree 2 or less.
+  function polyCoeffs(f) {
+    var f0 = f(0), f1 = f(1), fm = f(-1), f2 = f(2), f3 = f(3), fm2 = f(-2);
+    var c = f0, a = (f1 + fm) / 2 - c, b = (f1 - fm) / 2;
+    if (![a, b, c, f2, f3, fm2].every(isFinite)) return null;
+    if (Math.abs(4 * a + 2 * b + c - f2) > 1e-7 || Math.abs(9 * a + 3 * b + c - f3) > 1e-7 || Math.abs(4 * a - 2 * b + c - fm2) > 1e-7) return null;
+    var r = function (n) { return Math.round(n * 1e9) / 1e9; };
+    return { a: r(a), b: r(b), c: r(c) };
+  }
+
+  function polyStr(a, b, c, v) {
+    var out = "";
+    function add(coef, body) {
+      if (Math.abs(coef) < 1e-12) return;
+      var neg = coef < 0, mag = Math.abs(coef), m = (mag === 1 && body) ? "" : fmt(mag);
+      if (m.indexOf("/") >= 0) m = "(" + m + ")";
+      var piece = m + body;
+      out += out ? (neg ? " - " : " + ") + piece : (neg ? "-" : "") + piece;
+    }
+    add(a, v + "^2"); add(b, v); add(c, "");
+    return out || "0";
+  }
+
+  // sign changes of f between -20 and 20, refined by bisection
+  function numericRoots(f) {
+    var roots = [], lo = -20, hi = 20, N = 4000, px = lo, pv = f(lo);
+    for (var i = 1; i <= N && roots.length < 60; i++) {
+      var x1 = lo + ((hi - lo) * i) / N, v1 = f(x1);
+      if (isFinite(pv) && isFinite(v1) && (pv === 0 || pv * v1 < 0)) {
+        var a = px, b = x1, fa = pv, r;
+        if (pv !== 0) {
+          for (var k = 0; k < 60; k++) {
+            var m = (a + b) / 2, fmid = f(m);
+            if (!isFinite(fmid)) break;
+            if (fa * fmid <= 0) b = m; else { a = m; fa = fmid; }
+          }
+          r = (a + b) / 2;
+        } else r = px;
+        if (Math.abs(f(r)) < 1e-6 && roots.every(function (q) { return Math.abs(q - r) > 1e-4; })) roots.push(r);
+      }
+      px = x1; pv = v1;
+    }
+    // keep the 6 nearest zero, shown left to right
+    roots.sort(function (p, q) { return Math.abs(p) - Math.abs(q); });
+    return roots.slice(0, 6).sort(function (p, q) { return p - q; });
+  }
+
+  // split a sum into signed terms: x^3 - 4x -> [+x^3, -4x]
+  function collect(n, sign, out) {
+    if (n.isParenthesisNode) { collect(n.content, sign, out); return; }
+    if (n.isOperatorNode && n.fn === "add" && n.args.length === 2) { collect(n.args[0], sign, out); collect(n.args[1], sign, out); return; }
+    if (n.isOperatorNode && n.fn === "subtract" && n.args.length === 2) { collect(n.args[0], sign, out); collect(n.args[1], -sign, out); return; }
+    if (n.isOperatorNode && n.fn === "unaryMinus") { collect(n.args[0], -sign, out); return; }
+    out.push({ s: sign, n: n });
+  }
+
+  // plain-words name of the differentiation rule a term needs
+  function rule(n, v) {
+    if (n.isParenthesisNode) return rule(n.content, v);
+    if (!dep(n, v)) return "It has no `" + v + "` in it, so it is a constant and its derivative is 0.";
+    if (n.isSymbolNode) return "The derivative of `" + v + "` is 1.";
+    if (n.isOperatorNode) {
+      if (n.fn === "unaryMinus") return rule(n.args[0], v);
+      if (n.fn === "pow") {
+        if (n.args[0].isSymbolNode && n.args[0].name === v && !dep(n.args[1], v)) return "Power rule: bring the exponent down in front and lower the exponent by 1.";
+        return "This is a power of something that changes. Use the chain rule or the exponential rule.";
+      }
+      if (n.fn === "multiply") {
+        if (!dep(n.args[0], v) || !dep(n.args[1], v)) return "A constant multiplier stays in front. Differentiate the rest.";
+        return "Product rule: (first)' times second, plus first times (second)'.";
+      }
+      if (n.fn === "divide") {
+        if (!dep(n.args[1], v)) return "Dividing by a constant is the same as multiplying by it. Differentiate the top.";
+        return "Quotient rule: (top' times bottom minus top times bottom') over bottom squared.";
+      }
+    }
+    if (n.isFunctionNode) {
+      var nm = (n.fn && n.fn.name) || n.name, a0 = n.args[0];
+      if (a0 && a0.isSymbolNode && a0.name === v) return "Use the known derivative of `" + nm + "`.";
+      return "Chain rule: differentiate `" + nm + "`, then multiply by the derivative of what is inside.";
+    }
+    return "Differentiate it directly.";
+  }
+
+  function tidy(s) { return s.replace(/^[\s:.,;]+|[\s:.,;?]+$/g, ""); }
+
+  function derivFlow(t) {
+    var s = t, v = null, mm;
+    mm = /with respect to\s*([xyz])/.exec(s) || /∂\s*[a-z]?\s*\/\s*∂\s*([xyz])/.exec(s) || /\bd[a-z]?\s*\/\s*d([xyz])\b/.exec(s);
+    if (mm) v = mm[1];
+    var pt = null;
+    mm = /\b(?:at|when|where)\b\s*\(?\s*(?:x\s*=\s*)?(-?\d*\.?\d+)\s*,\s*(?:y\s*=\s*)?(-?\d*\.?\d+)\s*\)?/.exec(s);
+    if (mm) { pt = [parseFloat(mm[1]), parseFloat(mm[2])]; s = s.replace(mm[0], " "); }
+    else {
+      mm = /\b(?:at|when|where)\b\s*\(?\s*(?:[xyz]\s*=\s*)?(-?\d*\.?\d+)\s*\)?/.exec(s);
+      if (mm) { pt = [parseFloat(mm[1])]; s = s.replace(mm[0], " "); }
+    }
+    s = s.replace(/with respect to\s*[xyz]/g, " ")
+      .replace(/∂\s*[a-z]?\s*\/\s*∂\s*[xyz]/g, " ")
+      .replace(/\bd[a-z]?\s*\/\s*d[xyz]\b/g, " ")
+      .replace(/\b(derivative|differentiate|differentiation|partial|slope)\b(\s+of)?/g, " ")
+      .replace(/\bf'\s*\(\s*[xyz](?:\s*,\s*[xyz])?\s*\)/g, " ")
+      .replace(/\b(find|calculate|compute|determine|what|is|the|of|for|given|that|then|function|point|its|to)\b/g, " ");
+    if (s.indexOf("=") >= 0) s = s.slice(s.lastIndexOf("=") + 1);
+    s = tidy(s.split(/[,;]/)[0]);
+    if (!s) return null;
+    var node = math.parse(s), vars = varsOf(node);
+    if (!v) v = vars.indexOf("x") >= 0 ? "x" : (vars[0] || "x");
+    var multi = vars.length > 1;
+    var d = math.simplify(math.derivative(node, v));
+    var dStr = pretty(d.toString());
+    var label = multi ? "∂/∂" + v : "d/d" + v;
+    var steps = ["Start with the function: `" + (multi ? "z" : "f(" + v + ")") + " = " + pretty(node.toString()) + "`."];
+    if (multi) steps.push("Treat every letter except `" + v + "` as a constant. Only `" + v + "` is allowed to change.");
+    var parts = [];
+    collect(node, 1, parts);
+    if (parts.length > 1) steps.push("Differentiate term by term. Each part gets its own rule.");
+    parts.slice(0, 6).forEach(function (p) {
+      var td = math.simplify(math.derivative(p.n, v));
+      var res = p.s < 0 ? pretty(math.simplify("-(" + td.toString() + ")").toString()) : pretty(td.toString());
+      steps.push("Term `" + (p.s < 0 ? "-" : "") + pretty(p.n.toString()) + "`: " + rule(p.n, v) + " This gives `" + res + "`.");
+    });
+    if (parts.length > 6) steps.push("The remaining terms follow the same rules.");
+    steps.push((parts.length > 1 ? "Add the results: " : "So: ") + "`" + label + " = " + dStr + "`.");
+    var answer = "`" + label + " = " + dStr + "`";
+    var dom = 3, point = null;
+    if (pt) {
+      var scope = {};
+      if (pt.length === 2) { scope.x = pt[0]; scope.y = pt[1]; } else scope[v] = pt[0];
+      var val = NaN;
+      try { val = d.evaluate(scope); } catch (e) { val = NaN; }
+      if (typeof val === "number" && isFinite(val)) {
+        steps.push("Substitute " + (pt.length === 2 ? "`x = " + pt[0] + "` and `y = " + pt[1] + "`" : "`" + v + " = " + pt[0] + "`") + ": the value is `" + fmt(val) + "`.");
+        answer += ". At that point it equals `" + fmt(val) + "`";
+      }
+      dom = Math.min(6, Math.max(3, Math.abs(pt[0]) + 1, Math.abs(pt.length === 2 ? pt[1] : 0) + 1));
+      point = pt.length === 2 ? [pt[0], pt[1]] : (v === "y" && vars.length === 1 ? [0, pt[0]] : [pt[0], 0]);
+    }
+    return { problem: t, topic: multi ? "Partial derivative" : "Derivative", steps: steps, answer: answer, viz: { expr: s, domain: dom, point: point } };
+  }
+
+  function graphFlow(exprText, full) {
+    var s = tidy(exprText);
+    if (!s) return null;
+    var node = math.parse(s), vars = varsOf(node);
+    if (vars.some(function (n) { return n !== "x" && n !== "y"; })) return { error: "I can draw functions of x and y only." };
+    var code = math.compile(s), lname = full.split("=")[0].trim();
+    var expr = pretty(node.toString()), steps, answer, point = null;
+    if (vars.length === 2) {
+      var dx = math.simplify(math.derivative(node, "x")), dy = math.simplify(math.derivative(node, "y"));
+      steps = [
+        "`" + lname + " = " + expr + "` depends on both `x` and `y`, so its graph is a surface.",
+        "Hold `y` fixed and differentiate in `x`: `∂/∂x = " + pretty(dx.toString()) + "`.",
+        "Hold `x` fixed and differentiate in `y`: `∂/∂y = " + pretty(dy.toString()) + "`.",
+        "Where both partial derivatives are zero the surface is flat. Peaks, dips and saddle points can only sit at those spots."
+      ];
+      var fx = ev(dx.compile(), { x: 0, y: 0 }), fy = ev(dy.compile(), { x: 0, y: 0 }), z0 = ev(code, { x: 0, y: 0 });
+      if (Math.abs(fx) < 1e-9 && Math.abs(fy) < 1e-9 && isFinite(z0)) {
+        steps.push("At `(0, 0)` both partial derivatives are 0, so that point is flat. It is marked on the model.");
+        point = [0, 0];
+      }
+      answer = "`∂/∂x = " + pretty(dx.toString()) + "` and `∂/∂y = " + pretty(dy.toString()) + "`";
+    } else {
+      var v = vars[0] || "x", table = [];
+      [-2, 0, 2].forEach(function (xv) {
+        var sc = {}; sc[v] = xv;
+        var yv = ev(code, sc);
+        if (isFinite(yv)) table.push("`" + v + " = " + xv + "` gives `" + fmt(yv) + "`");
+      });
+      steps = ["`" + lname + " = " + expr + "` gives exactly one output for every input `" + v + "`."];
+      if (table.length) steps.push("Try a few inputs: " + table.join(", ") + ".");
+      var d1 = null;
+      try { d1 = math.simplify(math.derivative(node, v)); } catch (e) { d1 = null; }
+      if (d1) steps.push("The slope at any point is the derivative: `d/d" + v + " = " + pretty(d1.toString()) + "`.");
+      steps.push("The 3D view draws this curve as a sheet: the same curve repeated along the other direction.");
+      answer = d1 ? "The slope function is `d/d" + v + " = " + pretty(d1.toString()) + "`." : "The curve is drawn in the 3D view.";
+    }
+    return { problem: full, topic: vars.length === 2 ? "Surface" : "Function", steps: steps, answer: answer, viz: { expr: s, domain: 3, point: point } };
+  }
+
+  function equationFlow(t) {
+    var parts = t.split("=");
+    if (parts.length !== 2 || !tidy(parts[0]) || !tidy(parts[1])) return null;
+    var ln = math.parse(parts[0]), rn = math.parse(parts[1]);
+    var vars = varsOf(ln).concat(varsOf(rn)).filter(function (n, i, a) { return a.indexOf(n) === i; });
+    if (vars.length !== 1) return { error: vars.length ? "I can solve for one unknown at a time. This has " + vars.join(" and ") + "." : "There is no unknown letter to solve for." };
+    var v = vars[0], L = pretty(ln.toString()), R = pretty(rn.toString());
+    var diffText = "(" + parts[0] + ") - (" + parts[1] + ")";
+    var diff = math.compile(diffText), lc = math.compile(parts[0]), rc = math.compile(parts[1]);
+    function at(code, val) { var sc = {}; sc[v] = val; return ev(code, sc); }
+    function f(val) { return at(diff, val); }
+    var vexpr = v === "x" ? diffText : diffText.replace(new RegExp("\\b" + v + "\\b", "g"), "x");
+    var simpDiff = diffText;
+    try { simpDiff = pretty(math.simplify(diffText).toString()); } catch (e) { simpDiff = diffText; }
+    var steps = ["Start with `" + L + " = " + R + "`."], answer, point = null, domain = 3, topic = "Equation";
+    var co = polyCoeffs(f), E = 1e-12;
+
+    if (co && Math.abs(co.a) < E && Math.abs(co.b) < E) {
+      var always = Math.abs(co.c) < 1e-9;
+      steps.push(always ? "Both sides are always equal, so every value of `" + v + "` works." : "Both sides simplify to different numbers, so no value of `" + v + "` works.");
+      return { problem: t, topic: topic, steps: steps, answer: always ? "Every value of `" + v + "` is a solution." : "There is no solution.", viz: null };
+    }
+
+    if (co && Math.abs(co.a) < E) {
+      topic = "Linear equation";
+      var r = -co.c / co.b;
+      steps.push("Move everything to the left side. The equation becomes `" + polyStr(0, co.b, co.c, v) + " = 0`.");
+      if (Math.abs(co.c) > E) steps.push("Move the constant to the other side: `" + polyStr(0, co.b, 0, v) + " = " + fmt(-co.c) + "`.");
+      steps.push("Divide both sides by " + fmt(co.b) + ": `" + v + " = " + fmt(r) + "`.");
+      steps.push("Check: put `" + v + " = " + fmt(r) + "` back in. The left side is `" + fmt(at(lc, r)) + "` and the right side is `" + fmt(at(rc, r)) + "`.");
+      answer = "`" + v + " = " + fmt(r) + "`";
+      point = [r, 0]; domain = Math.min(6, Math.max(3, Math.abs(r) + 1));
+    } else if (co) {
+      topic = "Quadratic equation";
+      var a = co.a, b = co.b, c = co.c, D = b * b - 4 * a * c;
+      steps.push("Move everything to one side so it equals zero: `" + polyStr(a, b, c, v) + " = 0`.");
+      steps.push("Read off the numbers: `a = " + fmt(a) + "`, `b = " + fmt(b) + "`, `c = " + fmt(c) + "`.");
+      steps.push("Find the discriminant: `D = b^2 - 4ac = (" + fmt(b) + ")^2 - 4(" + fmt(a) + ")(" + fmt(c) + ") = " + fmt(D) + "`.");
+      if (D > 1e-9) {
+        var sq = Math.sqrt(D), r1 = (-b - sq) / (2 * a), r2 = (-b + sq) / (2 * a);
+        var lo = Math.min(r1, r2), hi = Math.max(r1, r2), irr = fmt(sq).indexOf(".") >= 0;
+        steps.push("`D` is positive, so there are two real solutions.");
+        steps.push("Use the quadratic formula `" + v + " = (-b ± sqrt(D)) / 2a`. With your numbers: `" + v + " = (" + fmt(-b) + " ± sqrt(" + fmt(D) + ")) / " + fmt(2 * a) + "`.");
+        steps.push("The solutions are `" + v + " = " + fmt(lo) + "` and `" + v + " = " + fmt(hi) + "`." + (irr ? " They are rounded to 6 decimal places." : ""));
+        steps.push("Check one answer: put `" + v + " = " + fmt(lo) + "` back in. Left minus right comes to `" + fmt(f(lo)) + "`.");
+        answer = "`" + v + " = " + fmt(lo) + "` or `" + v + " = " + fmt(hi) + "`";
+        point = [lo, 0]; domain = Math.min(6, Math.max(3, Math.abs(lo) + 1, Math.abs(hi) + 1));
+      } else if (Math.abs(D) <= 1e-9) {
+        var rr0 = -b / (2 * a);
+        steps.push("`D` is zero, so there is exactly one solution (a repeated one).");
+        steps.push("Use the quadratic formula: `" + v + " = -b / 2a = " + fmt(-b) + " / " + fmt(2 * a) + " = " + fmt(rr0) + "`.");
+        steps.push("Check: put `" + v + " = " + fmt(rr0) + "` back in. Left minus right comes to `" + fmt(f(rr0)) + "`.");
+        answer = "`" + v + " = " + fmt(rr0) + "`";
+        point = [rr0, 0]; domain = Math.min(6, Math.max(3, Math.abs(rr0) + 1));
+      } else {
+        var p = -b / (2 * a), q = Math.sqrt(-D) / (2 * Math.abs(a));
+        steps.push("`D` is negative, so there are no real solutions. The graph never touches zero.");
+        steps.push("The solutions are complex numbers: `" + v + " = " + fmt(p) + " ± " + fmt(q) + "i`.");
+        answer = "No real solutions. The complex solutions are `" + v + " = " + fmt(p) + " ± " + fmt(q) + "i`.";
+        domain = Math.min(6, Math.max(3, Math.abs(p) + 2));
+      }
+    } else {
+      steps.push("Rewrite it as `" + simpDiff + " = 0`. The solutions are the values of `" + v + "` where this crosses zero.");
+      steps.push("This is not a plain linear or quadratic equation, so I look for the crossings numerically between -20 and 20.");
+      var rs = numericRoots(f), rd = function (n) { return String(Math.round(n * 1e4) / 1e4); };
+      if (rs.length) {
+        var shown = rs.map(function (n) { return "`" + v + " ≈ " + rd(n) + "`"; });
+        steps.push("Crossings found (up to 6, nearest to zero): " + shown.join(", ") + ". These are rounded to 4 decimal places. A touch without crossing, like a double root, can be missed.");
+        answer = shown.join(", ");
+        if (Math.abs(rs[0]) <= 5) { point = [rs[0], 0]; domain = Math.min(6, Math.max(3, Math.abs(rs[0]) + 1)); }
+      } else {
+        steps.push("I found no crossing between -20 and 20.");
+        answer = "No solution found between -20 and 20.";
+      }
+    }
+    steps.push("The 3D model draws `" + simpDiff + "`." + (point ? " The marked point is where it crosses zero, which is a solution." : " Look for where it crosses zero."));
+    return { problem: t, topic: topic, steps: steps, answer: answer, viz: { expr: vexpr, domain: domain, point: point } };
+  }
+
+  function exprFlow(t) {
+    var s = tidy(t.replace(/\b(simplify|evaluate|calculate|compute|find|what is|expand)\b/g, " "));
+    if (!s) return null;
+    var node = math.parse(s), vars = varsOf(node);
+    if (!vars.length) {
+      var val = node.evaluate();
+      if (typeof val !== "number" || !isFinite(val)) return null;
+      return {
+        problem: t, topic: "Arithmetic", viz: null,
+        steps: ["Start with `" + pretty(node.toString()) + "`.", "Work in order: brackets, then powers, then multiplication and division, then addition and subtraction.", "The value is `" + fmt(val) + "`."],
+        answer: "`" + fmt(val) + "`"
+      };
+    }
+    var simp = pretty(math.simplify(node).toString());
+    var ok = vars.every(function (n) { return n === "x" || n === "y"; });
+    return {
+      problem: t, topic: "Simplify", viz: ok ? { expr: s, domain: 3, point: null } : null,
+      steps: ["Start with `" + pretty(node.toString()) + "`.", "Combine like terms and tidy up: `" + simp + "`."],
+      answer: "`" + simp + "`"
+    };
+  }
+
+  // decide what kind of problem this is
+  function solveText(t) {
+    if (/[<>≤≥]/.test(t)) return { error: "I can't solve inequalities yet. Try an equation, a derivative, or a surface." };
+    if (/derivative|differentiate|∂|partial|f'\s*\(|slope|\bd[a-z]?\s*\/\s*d[xyz]\b/.test(t)) return derivFlow(t);
+    var m = /^\s*(z|y|f\s*\(\s*x\s*(?:,\s*y\s*)?\)|g\s*\(\s*x\s*\))\s*=\s*(.+)$/.exec(t);
+    if (m) return graphFlow(m[2], t);
+    if (t.indexOf("=") >= 0) return equationFlow(t);
+    return exprFlow(t);
+  }
+  // ==== SOLVER-END ====
+
+  // ---- photo reading ----
+  function prepCanvas(file) {
+    return new Promise(function (resolve, reject) {
+      var url = URL.createObjectURL(file), img = new Image();
+      img.onload = function () {
+        var longest = Math.max(img.width, img.height);
+        var s = longest > 2000 ? 2000 / longest : (longest < 1000 ? 1400 / longest : 1);
+        var c = document.createElement("canvas");
+        c.width = Math.max(1, Math.round(img.width * s)); c.height = Math.max(1, Math.round(img.height * s));
+        var cx = c.getContext("2d", { willReadFrequently: true });
+        cx.fillStyle = "#fff"; cx.fillRect(0, 0, c.width, c.height);
+        cx.drawImage(img, 0, 0, c.width, c.height);
+        URL.revokeObjectURL(url);
+        try {
+          // grayscale, then stretch the contrast so faint pencil reads better
+          var id = cx.getImageData(0, 0, c.width, c.height), d = id.data, hist = new Array(256).fill(0), i, g;
+          for (i = 0; i < d.length; i += 4) { g = Math.round(0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2]); d[i] = d[i + 1] = d[i + 2] = g; hist[g]++; }
+          var total = d.length / 4, acc = 0, lo = 0, hi = 255;
+          for (i = 0; i < 256; i++) { acc += hist[i]; if (acc > total * 0.02) { lo = i; break; } }
+          acc = 0;
+          for (i = 255; i >= 0; i--) { acc += hist[i]; if (acc > total * 0.02) { hi = i; break; } }
+          if (hi - lo > 20) for (i = 0; i < d.length; i += 4) { g = Math.max(0, Math.min(255, Math.round((d[i] - lo) * 255 / (hi - lo)))); d[i] = d[i + 1] = d[i + 2] = g; }
+          cx.putImageData(id, 0, 0);
+        } catch (e) { /* use the plain image */ }
+        resolve(c);
+      };
+      img.onerror = function () { URL.revokeObjectURL(url); reject({ code: "image" }); };
+      img.src = url;
+    });
+  }
+
+  function bestLine(text) {
+    var lines = String(text).split(/\r?\n/).map(function (l) { return l.trim(); }).filter(Boolean), best = "", bestScore = -1;
+    lines.forEach(function (l) {
+      var sc = (l.match(/[0-9=+\-*\/^()xyz∂²³√]/gi) || []).length;
+      if (sc > bestScore) { best = l; bestScore = sc; }
+    });
+    return { text: best, count: lines.length };
+  }
+
+  // ---- the "Your problem" panel ----
+  var photoIn = document.getElementById("photoIn"), pickBtn = document.getElementById("pick"), thumb = document.getElementById("thumb");
+  var statusEl = document.getElementById("status"), ptext = document.getElementById("ptext"), solveBtn = document.getElementById("solve"), chipsEl = document.getElementById("chips");
+  var thumbUrl = null;
+  function setStatus(msg, err) { statusEl.textContent = msg; statusEl.className = "status" + (err ? " err" : ""); }
+
+  async function readPhoto(file) {
+    if (typeof Tesseract === "undefined") throw { code: "no_ocr" };
+    var c = await prepCanvas(file);
+    var res = await Tesseract.recognize(c, "eng", {
+      logger: function (m) {
+        if (m.status === "recognizing text") setStatus("Reading the photo... " + Math.round(m.progress * 100) + "%");
+        else setStatus("Loading the text reader... the first time takes a moment.");
+      }
+    });
+    return (res && res.data && res.data.text) || "";
+  }
+
+  function runSolve() {
+    var raw = ptext.value;
+    if (!raw.trim()) { setStatus("Type a problem or upload a photo first.", true); return; }
+    if (typeof math === "undefined") { setStatus("The solver library didn't load. Check your internet connection and reload the page.", true); return; }
+    var out = null;
+    try { out = solveText(norm(raw)); } catch (e) { out = null; }
+    if (!out) { setStatus("I couldn't read that as a problem I can solve. Check the text: use ^ for powers (x^2) and * for times. I handle equations, derivatives and surfaces.", true); return; }
+    if (out.error) { setStatus(out.error, true); return; }
+    setCustom(out);
+    setStatus("Solved. Step through it and turn the model.");
+  }
+
+  EXAMPLES.forEach(function (ex) {
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "ex"; b.textContent = ex;
+    b.addEventListener("click", function () { ptext.value = ex; runSolve(); });
+    chipsEl.appendChild(b);
+  });
+  solveBtn.addEventListener("click", runSolve);
+  ptext.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); runSolve(); } });
+  pickBtn.addEventListener("click", function () { photoIn.click(); });
+  photoIn.addEventListener("change", async function () {
+    var f = photoIn.files && photoIn.files[0];
+    if (!f) return;
+    try { if (thumbUrl) URL.revokeObjectURL(thumbUrl); thumbUrl = URL.createObjectURL(f); thumb.src = thumbUrl; thumb.hidden = false; } catch (e) {}
+    pickBtn.disabled = true; solveBtn.disabled = true;
+    try {
+      var b = bestLine(await readPhoto(f));
+      if (!b.text) setStatus("I couldn't find any text in that photo. Try a closer, brighter photo, or type the problem.", true);
+      else {
+        ptext.value = norm(b.text);
+        setStatus("Check the text below and fix any mistakes, then press Solve." + (b.count > 1 ? " The photo had " + b.count + " lines. I used the most math-like one." : ""));
+        ptext.focus();
+      }
+    } catch (e) {
+      setStatus(e && e.code === "no_ocr" ? "The photo reader didn't load. Check your internet connection and reload, or type the problem." : "I couldn't read that photo. Try a clearer one, or type the problem.", true);
+    } finally {
+      pickBtn.disabled = false; solveBtn.disabled = false; photoIn.value = "";
+    }
+  });
+
+  readColors(); renderSteps(); size();
+  if ("ResizeObserver" in window) new ResizeObserver(size).observe(cv); else window.addEventListener("resize", size);
+  var mq = window.matchMedia("(prefers-color-scheme: dark)");
+  function recolor() { readColors(); draw(); }
+  if (mq.addEventListener) mq.addEventListener("change", recolor);
+  new MutationObserver(recolor).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>
